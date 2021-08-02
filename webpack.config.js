@@ -2,8 +2,6 @@ const path = require("path");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const tailwindcss = require('tailwindcss')
-const autoprefixer = require('autoprefixer')
 
 module.exports = {
     entry: path.join(__dirname, "src", "index.js"),
