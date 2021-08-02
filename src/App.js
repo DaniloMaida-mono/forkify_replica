@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "./components/Header";
+import Main from "./components/Main";
 
 const axios = require("axios");
 
@@ -41,10 +42,7 @@ const App = () => {
     <div className="App">
       <div className="container">
         <Header onChange={handleChange} onSubmit={handleSubmit} />
-
-        <div className="test">
-          {queryResults.length >= 1 ? renderQueryResults : "No items found"}
-        </div>
+        <Main recipes={queryResults} />
       </div>
     </div>
   );
