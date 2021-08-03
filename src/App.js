@@ -8,7 +8,10 @@ const App = () => {
   const url = "https://forkify-api.herokuapp.com/api";
   const [query, setQuery] = useState("");
 
+  const [error, SetError] = useState("");
+
   const [queryResults, setQueryResults] = useState([]);
+  const [page, setPage] = useState(1);
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -17,15 +20,28 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    getRecipes().then((data) => {
-      const { recipes } = data;
-      setQueryResults(recipes);
-    });
+    getRecipes()
+      .then((data) => {
+        const { recipes } = data || [];
+        if (recipes) {
+          setPage(1);
+          setQueryResults(recipes);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        SetError("Something went wrong with data fetching");
+      });
   };
 
-  const renderQueryResults = queryResults.map((item, i) => {
-    return <div>{item.title}</div>;
-  });
+  const handlePrevPage = (e) => {
+    const { prev } = e.target.dataset;
+    setPage(parseInt(prev));
+  };
+  const handleNextPage = (e) => {
+    const { next } = e.target.dataset;
+    setPage(parseInt(next));
+  };
 
   const getRecipes = async () => {
     try {
@@ -34,7 +50,7 @@ const App = () => {
       });
       return data;
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   };
 
@@ -42,7 +58,13 @@ const App = () => {
     <div className="App">
       <div className="container">
         <Header onChange={handleChange} onSubmit={handleSubmit} />
-        <Main recipes={queryResults} />
+        <Main
+          recipes={queryResults}
+          page={page}
+          nextPage={handleNextPage}
+          prevPage={handlePrevPage}
+          error={error}
+        />
       </div>
     </div>
   );

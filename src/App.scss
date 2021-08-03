@@ -15,6 +15,7 @@ body {
     background-image: $gradient;
     background-size: cover;
     background-repeat: no-repeat;
+    min-height: 100vh;
 }
 
 
@@ -31,10 +32,14 @@ body {
 
 @media screen and (min-width: 1024px) {
 
+    body {
+        padding: 4vw 0;
+    }
+
     .container {
         max-width: 120rem;
-        min-height: 117rem;
-        margin: 4vw auto;
+        min-height: 720px;
+        margin: 0 auto;
         border-radius: 9px;
 
     }
