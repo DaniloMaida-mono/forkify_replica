@@ -5,7 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-function RecipesList({ recipes, page, nextPage, prevPage, error }) {
+function RecipesList({
+  recipes,
+  page,
+  nextPage,
+  prevPage,
+  error,
+  clickRecipe,
+}) {
   const start = (page - 1) * 10;
   const stop = page * 10;
   if (recipes.length) {
@@ -13,7 +20,7 @@ function RecipesList({ recipes, page, nextPage, prevPage, error }) {
     const list = paginatedRecipes.map((recipe, i) => {
       return (
         <React.Fragment key={recipe?.recipe_id}>
-          <Recipe item={recipe} />
+          <Recipe item={recipe} onClick={clickRecipe} />
         </React.Fragment>
       );
     });

@@ -8,8 +8,13 @@ function Header(props) {
       <div className="logo">
         <img src={logo} alt="Forkify Replica" />
       </div>
-      <form className="search d-flex items-center" onSubmit={props.onSubmit}>
+      <form
+        autoComplete="off"
+        className="search d-flex items-center"
+        onSubmit={props.onSubmit}
+      >
         <input
+          autoComplete="off"
           className="search__input"
           type="search"
           name="search"

@@ -5,7 +5,6 @@ import Main from "./components/Main";
 const axios = require("axios");
 
 const App = () => {
-  const url = "https://forkify-api.herokuapp.com/api";
   const [query, setQuery] = useState("");
 
   const [error, SetError] = useState("");
@@ -45,7 +44,7 @@ const App = () => {
 
   const getRecipes = async () => {
     try {
-      const { data } = await axios.get(url + "/search", {
+      const { data } = await axios.get(process.env.API_URL + "/search", {
         params: { q: query },
       });
       return data;

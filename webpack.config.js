@@ -3,16 +3,22 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
+const Dotenv = require('dotenv-webpack');
+
 module.exports = {
     entry: path.join(__dirname, "src", "index.js"),
     output: {
         path: path.join(__dirname, "public"),
-        filename: "./js/[name].[contenthash].js"
+        filename: "./js/[name].[contenthash].js",
+        clean: true,
     },
     mode: process.env.NODE_ENV || "development",
     resolve: { modules: [path.resolve(__dirname, "src"), "node_modules"] },
     devServer: {
         contentBase: path.join(__dirname, "src"),
+        port: 3000,
+        watchContentBase: true,
+        historyApiFallback: true,
     },
     module: {
         rules: [
@@ -44,8 +50,17 @@ module.exports = {
             filename: 'css/[name].[contenthash].css',
             chunkFilename: '[id].[contenthash].css',
         }),
+        new Dotenv(),
     ],
     optimization: {
-        splitChunks: { chunks: "all" }
+        splitChunks: {
+            chunks: "all",
+            minSize: {
+                javascript: 80000,
+            },
+            maxSize: {
+                javascript: 120000,
+            }
+        }
     },
 };
