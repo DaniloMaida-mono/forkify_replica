@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=development webpack serve",
-    "build": "NODE_ENV=production webpack "
+    "build": "NODE_ENV=production API_URL=https://forkify-api.herokuapp.com/api webpack "
   },
   "keywords": [],
   "author": "",
