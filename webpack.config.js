@@ -2,7 +2,7 @@ const path = require("path");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
+const webpack = require('webpack')
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
@@ -51,6 +51,11 @@ module.exports = {
             chunkFilename: '[id].[contenthash].css',
         }),
         new Dotenv(),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'API_URL': JSON.stringify('https://forkify-api.herokuapp.com/api')
+            }
+        }),
     ],
     optimization: {
         splitChunks: {
