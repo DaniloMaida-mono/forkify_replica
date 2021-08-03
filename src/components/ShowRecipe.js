@@ -21,10 +21,12 @@ function ShowRecipe({ item, servings, addServing, removeServing, time }) {
             fontSize: "15px",
           }}
         />
-        {ingsObj.count && (
-          <span className="ing-quantity">{ingsObj?.count}</span>
-        )}
-        <span className="ing-desc">{ingsObj?.desc}</span>
+        <span>
+          {ingsObj.count && (
+            <span className="ing-quantity">{ingsObj?.count} </span>
+          )}{" "}
+          <span className="ing-desc">{ingsObj?.desc}</span>
+        </span>
       </li>
     );
   });
@@ -41,7 +43,6 @@ function ShowRecipe({ item, servings, addServing, removeServing, time }) {
       obj.count = parseQuantity(quantity, servings);
     }
 
-    console.log(obj);
     return obj;
   }
 
@@ -60,7 +61,11 @@ function ShowRecipe({ item, servings, addServing, removeServing, time }) {
     if (parseFloat(amount) === parseInt(amount)) {
       return amount;
     }
-    amount = amount.toFixed(2);
+
+    if (amount.toString().split(".")[1].length > 4) {
+      amount = amount.toFixed(2);
+    }
+
     var gcd = function (a, b) {
       if (b < 0.0000001) {
         return a;
