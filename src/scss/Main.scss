@@ -156,6 +156,10 @@
             gap: 2.5rem 3rem;
             font-size: 1.2rem;
         }
+
+        span.ing-quantity {
+            margin-right: 10px;
+        }
     }
 }
 
@@ -185,7 +189,7 @@
 
     .recipe {
         svg {
-            font-size: 30px;
+            font-size: 25px;
         }
 
         h2 {
@@ -237,6 +241,8 @@
             ul {
                 font-size: 1.6rem;
             }
+
+
         }
     }
 }

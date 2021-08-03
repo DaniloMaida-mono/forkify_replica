@@ -11,9 +11,9 @@ import {
 
 function ShowRecipe({ item, servings, addServing, removeServing, time }) {
   const ingredients = item?.ingredients.map((ing, i) => {
-    calculateIngredient(ing);
+    const ingsObj = calculateIngredient(ing);
     return (
-      <li key={i} className="ing-item d-flex items-center">
+      <li key={i} className="ing-item d-flex">
         <FontAwesomeIcon
           icon={faCheck}
           style={{
@@ -21,18 +21,68 @@ function ShowRecipe({ item, servings, addServing, removeServing, time }) {
             fontSize: "15px",
           }}
         />
-        <span className="ing-quantity"></span>
-        <span className="ing-desc">{ing}</span>
+        {ingsObj.count && (
+          <span className="ing-quantity">{ingsObj?.count}</span>
+        )}
+        <span className="ing-desc">{ingsObj?.desc}</span>
       </li>
     );
   });
 
   function calculateIngredient(ing) {
     const arrSplit = ing.split(" ");
-    const regex = /[0-9]\/(\d{1})\b/;
-    const quantity = arrSplit[0].match(regex);
+    const quantity = arrSplit[0].match(/\d*([-]|[\/]?\d+)/g);
 
-    console.log(quantity);
+    let obj = {
+      count: "",
+      desc: arrSplit.slice(1).join(" "),
+    };
+    if (quantity) {
+      obj.count = parseQuantity(quantity, servings);
+    }
+
+    console.log(obj);
+    return obj;
+  }
+
+  function parseQuantity(arr, servings) {
+    if (arr.length > 1) {
+      arr[0] = arr[0].replace("-", "");
+    }
+    const portion = (eval(arr.join("+")) / 4) * servings;
+
+    const splitPortion = portion.toString().split(".");
+    const val = numberToFraction(eval(splitPortion.join(".")));
+    return val.toString().replace(" ", "-");
+  }
+
+  function numberToFraction(amount) {
+    if (parseFloat(amount) === parseInt(amount)) {
+      return amount;
+    }
+    amount = amount.toFixed(2);
+    var gcd = function (a, b) {
+      if (b < 0.0000001) {
+        return a;
+      }
+      return gcd(b, Math.floor(a % b));
+    };
+    var len = amount.toString().length - 2;
+    var denominator = Math.pow(10, len);
+    var numerator = amount * denominator;
+    var divisor = gcd(numerator, denominator);
+    numerator /= divisor;
+    denominator /= divisor;
+    var base = 0;
+    if (numerator > denominator) {
+      base = Math.floor(numerator / denominator);
+      numerator -= base * denominator;
+    }
+    amount = Math.floor(numerator) + "/" + Math.floor(denominator);
+    if (base) {
+      amount = base + " " + amount;
+    }
+    return amount;
   }
 
   return (
