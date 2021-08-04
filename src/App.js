@@ -51,7 +51,9 @@ const App = () => {
       })
       .catch((err) => {
         console.log(err);
-        SetError("Something went wrong with data fetching");
+        SetError(
+          "Something went wrong with data fetching, check the available keyword allowed: https://forkify-api.herokuapp.com/phrases.html"
+        );
       });
   };
 
