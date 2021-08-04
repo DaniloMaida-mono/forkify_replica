@@ -60,6 +60,20 @@
         }
     }
 
+    .bookmarks-container {
+        position: relative;
+
+        .bookmarks {
+            position: absolute;
+            padding: 1rem 0;
+            right: -2.5rem;
+            z-index: 10;
+            width: 40rem;
+            background-color: #fff;
+            transition: opacity 0.3s ease-in-out;
+        }
+    }
+
     .nav {
         cursor: pointer;
 

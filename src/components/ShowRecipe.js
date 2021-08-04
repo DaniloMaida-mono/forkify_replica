@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
@@ -8,8 +8,10 @@ import {
   faBookmark,
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import { BookmarksContext } from "../App";
 
 function ShowRecipe({ item, servings, addServing, removeServing, time }) {
+
   const ingredients = item?.ingredients.map((ing, i) => {
     const ingsObj = calculateIngredient(ing);
     return (
@@ -30,6 +32,15 @@ function ShowRecipe({ item, servings, addServing, removeServing, time }) {
       </li>
     );
   });
+
+  const { state, dispatch } = useContext(BookmarksContext);
+
+
+  const findSavedIndex = () => {
+    return state.findIndex((stateItem, index) => {
+      return stateItem?.recipe_id === item?.recipe_id ? true : false;
+    });
+  }
 
   function calculateIngredient(ing) {
     const arrSplit = ing.split(" ");
@@ -131,7 +142,14 @@ function ShowRecipe({ item, servings, addServing, removeServing, time }) {
           </div>
         </div>
         <div className="d-flex justify-end">
-          <FontAwesomeIcon icon={faBookmark} className="pointer" />
+          <FontAwesomeIcon
+            icon={faBookmark}
+            className="pointer"
+            onClick={() => {
+              dispatch({ type: "pushButton", payload: item });
+            }}
+            style={{ color: findSavedIndex() !== -1 ? "#E5D000" : "" }}
+          />
         </div>
       </div>
 

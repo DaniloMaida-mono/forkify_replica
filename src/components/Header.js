@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import logo from "../img/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { BookmarksContext } from "../App";
+import Recipe from "./Recipe";
 function Header(props) {
+  const { state, dispatch } = useContext(BookmarksContext);
+
+  const [show, setShow] = useState(false);
+  const renderElems = state.map((item, i) => {
+    return (
+      <React.Fragment key={item?.recipe_id}>
+        <Recipe item={item} onClick={props.clickRecipe} />;
+      </React.Fragment>
+    );
+  });
+
+  const handleOnMouseEnter = () => {
+    setShow(true);
+  };
+
+  const handleOnMouseLeave = () => {
+    setShow(false);
+  };
   return (
     <header className="header d-flex justify-between items-center">
       <div className="logo">
@@ -26,7 +46,11 @@ function Header(props) {
           SEARCH
         </button>
       </form>
-      <div className="sm-hidden">
+      <div
+        className="bookmarks-container sm-hidden"
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+      >
         <nav className="nav d-flex items-center">
           <FontAwesomeIcon
             icon={faBookmark}
@@ -38,6 +62,23 @@ function Header(props) {
           />
           <span>BOOKMARKS</span>
         </nav>
+        <div
+          className="bookmarks"
+          style={{
+            visibility: show ? "visible" : "hidden",
+            opacity: show ? "1" : "0",
+          }}
+        >
+          {state.length ? (
+            <ul className="recipe-list d-flex flex-column">{renderElems}</ul>
+          ) : (
+            <div>
+              <h2 className="text-center">
+                Add some recipes to your Bookmarks!
+              </h2>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
