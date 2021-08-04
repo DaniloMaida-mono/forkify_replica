@@ -47,7 +47,7 @@ function Header(props) {
         </button>
       </form>
       <div
-        className="bookmarks-container sm-hidden"
+        className="bookmarks-container"
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
@@ -60,7 +60,7 @@ function Header(props) {
               color: "#f38e82",
             }}
           />
-          <span>BOOKMARKS</span>
+          <span className="sm-hidden">BOOKMARKS</span>
         </nav>
         <div
           className="bookmarks"
