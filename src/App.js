@@ -1,11 +1,12 @@
 import React, { useReducer, useState } from "react";
 import Header from "./components/Header";
 import Main from "./components/Main";
+import Client from "./services/Client";
 
-const axios = require("axios");
 export const BookmarksContext = React.createContext();
 
 const initialState = [];
+const client = new Client(process.env.API_URL);
 
 function bookmarksReducer(state, action) {
   switch (action.type) {
@@ -24,6 +25,7 @@ function bookmarksReducer(state, action) {
   }
 }
 const App = () => {
+
   const [state, dispatch] = useReducer(bookmarksReducer, initialState);
   const [query, setQuery] = useState("");
   const [error, SetError] = useState("");
@@ -41,20 +43,17 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    getRecipes()
-      .then((data) => {
-        const { recipes } = data || [];
-        if (recipes) {
-          setPage(1);
-          setQueryResults(recipes);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        SetError(
-          "Something went wrong with data fetching, check the available keyword allowed: https://forkify-api.herokuapp.com/phrases.html"
-        );
-      });
+    try {
+      const { data } = await client.get('/search', { q: query });
+      const { recipes } = data
+      setPage(1);
+      setQueryResults(recipes);
+    } catch (err) {
+      console.log(err);
+      SetError(
+        "Something went wrong with data fetching, check the available keyword allowed: https://forkify-api.herokuapp.com/phrases.html"
+      );
+    }
   };
 
   const handlePrevPage = (e) => {
@@ -66,36 +65,17 @@ const App = () => {
     setPage(parseInt(next));
   };
 
-  const getRecipes = async () => {
+  const handleShowRecipe = async (e) => {
     try {
-      const { data } = await axios.get(process.env.API_URL + "/search", {
-        params: { q: query },
-      });
-      return data;
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  const handleShowRecipe = (e) => {
-    const { rid } = e.currentTarget.dataset;
-    getRecipe(rid).then((data) => {
+      const { rid } = e.currentTarget.dataset;
+      const { data } = await client.get('/get', { rId: rid });
       const { recipe } = data || {};
       if (recipe) {
         setTime(Math.ceil(recipe?.ingredients.length / 3) * 3);
         setItemToShow(recipe);
       }
-    });
-  };
-
-  const getRecipe = async (rid) => {
-    try {
-      const { data } = await axios.get(process.env.API_URL + "/get", {
-        params: { rId: rid },
-      });
-      return data;
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
 

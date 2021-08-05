@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 export default class Paginator {
+    item;
     constructor(item) {
         this.item = item
     }
