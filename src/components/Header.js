@@ -5,9 +5,8 @@ import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { BookmarksContext } from "../App";
 import Recipe from "./Recipe";
 function Header(props) {
-  const { state, dispatch } = useContext(BookmarksContext);
+  const { state } = useContext(BookmarksContext);
 
-  const [show, setShow] = useState(false);
   const renderElems = state.map((item, i) => {
     return (
       <React.Fragment key={item?.recipe_id}>
@@ -16,13 +15,6 @@ function Header(props) {
     );
   });
 
-  const handleOnMouseEnter = () => {
-    setShow(true);
-  };
-
-  const handleOnMouseLeave = () => {
-    setShow(false);
-  };
   return (
     <header className="header d-flex justify-between items-center">
       <div className="logo">
@@ -46,11 +38,7 @@ function Header(props) {
           SEARCH
         </button>
       </form>
-      <div
-        className="bookmarks-container"
-        onMouseEnter={handleOnMouseEnter}
-        onMouseLeave={handleOnMouseLeave}
-      >
+      <div className="bookmarks-container">
         <nav className="nav d-flex items-center">
           <FontAwesomeIcon
             icon={faBookmark}
@@ -64,10 +52,6 @@ function Header(props) {
         </nav>
         <div
           className="bookmarks"
-          style={{
-            visibility: show ? "visible" : "hidden",
-            opacity: show ? "1" : "0",
-          }}
         >
           {state.length ? (
             <ul className="recipe-list d-flex flex-column">{renderElems}</ul>
